@@ -1,9 +1,10 @@
 import React from 'react';
+import VentaPage from './components/VentaPage';
 
 function App() {
   return (
     <div>
-      Hola Mundo
+      <VentaPage />
     </div>
   );
 }
