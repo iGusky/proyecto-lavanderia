@@ -1,10 +1,9 @@
-import React from 'react';
-import VentaPage from './components/VentaPage';
+import VentaComponent from "./components/VentaComponent";
 
 function App() {
   return (
     <div>
-      <VentaPage />
+      <VentaComponent/>
     </div>
   );
 }
