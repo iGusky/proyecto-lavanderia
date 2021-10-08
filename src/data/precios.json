@@ -1,0 +1,56 @@
+{
+  "servicios": [
+    {
+      "nombre": "Lavanderia",
+      "value": 0,
+      "tipos": [
+        {
+          "nombre": "Lavado normal",
+          "value": 0,
+          "precio": 13
+        },
+        {
+          "nombre": "Lavado express",
+          "value": 1,
+          "precio": 18
+        },
+        {
+          "nombre": "Secado normal",
+          "value": 2,
+          "precio": 11
+        },
+        {
+          "nombre": "Secado express",
+          "value": 3,
+          "precio": 16
+        }
+      ]
+    },
+    {
+      "nombre": "Tintoreria",
+      "value": 1,
+      "tipos": [
+        {
+          "nombre": "Lavados normal",
+          "value": 0,
+          "precio": 13
+        },
+        {
+          "nombre": "Lavados express",
+          "value": 1,
+          "precio": 18
+        },
+        {
+          "nombre": "Secados normal",
+          "value": 2,
+          "precio": 11
+        },
+        {
+          "nombre": "Secados express",
+          "value": 3,
+          "precio": 16
+        }
+      ]
+    }
+  ]
+}

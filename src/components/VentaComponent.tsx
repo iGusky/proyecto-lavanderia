@@ -1,11 +1,14 @@
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import * as Yup from 'yup'
-import '../styles/VentaPage.css'
 import ServicioRow from './ServicioRow';
 
+import '../styles/VentaPage.css'
+
+import data from '../data/precios.json';
+
 const VentaComponent = () => {
-  const pedidoInicial = {servicio: '', tipo: '', cantidad: '0', unidad: '', precioUnitario: 0, subtotal: 0}
+  const pedidoInicial = { servicio: '', tipo: '', cantidad: '0', unidad: '', precioUnitario: 0, subtotal: 0 }
   const [pedidosCantidad, setPedidosCantidad] = useState(0)
   const formik = useFormik({
     initialValues: {
@@ -21,7 +24,6 @@ const VentaComponent = () => {
     }),
     onSubmit: (values) => console.log(values)
   })
-
   return (
     <div className="container">
       <h1>Venta</h1>
@@ -82,16 +84,36 @@ const VentaComponent = () => {
                     key={index}
                     formik={formik}
                     index={index}
+                    data={data}
                   />
                 )
               })
             }
           </tbody>
         </table>
-        <input type="button" onClick={() => {
-          setPedidosCantidad(pedidosCantidad+1);
-          formik.values.pedidos.push(pedidoInicial)
-        }} value="Nuevo" />
+        <input
+          type="button"
+          onClick={() => {
+            setPedidosCantidad(pedidosCantidad + 1);
+            formik.values.pedidos.push(pedidoInicial)
+          }}
+          className="btn float-right mt-1"
+          value="Nuevo"
+        />
+        <h2>Pago</h2>
+        <div className="input-group">
+          <input
+            type="number"
+            name="pago"
+            id="pago"
+            min="0"
+            className="input-field"
+            value={formik.values.pago}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+        </div>
+
         <input type="submit" value="Generar pedido" className="btn" />
       </form>
     </div>

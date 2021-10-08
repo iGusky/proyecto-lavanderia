@@ -1,28 +1,45 @@
+import { useState } from 'react';
 const ServicioRow = (props: any) => {
-  const { formik, index } = props;
+  const { formik, index, data } = props;
+  const [serviceSelected, setServiceSelected] = useState(0);
+  const [typeSelected, setTypeSelected] = useState(0);
+  const { servicios } = data;
+  console.log(servicios[serviceSelected].tipos)
+
   return (
     <tr key={index}>
       <td>
         <select
           name={`pedidos[${index}].servicio`}
           value={formik.values.pedidos[index].servicio}
-          onChange={formik.handleChange}
+          onChange={(e)=>{
+            formik.handleChange(e);
+            setServiceSelected(Number(e.target.value));
+          }}
           onBlur={formik.handleBlur}
           className="input-field">
-          <option value="lavanderia">Lavanderia</option>
-          <option value="tintoreria">Tintoreria</option>
-          <option value="sabanas">Sabanas</option>
+          {
+            servicios.map((servicio: any) => {
+              return <option value={servicio.value} >{servicio.nombre}</option>
+            })
+          }
         </select>
       </td>
       <td>
         <select
           name={`pedidos[${index}].tipo`}
           value={formik.values.pedidos[index].tipo}
-          onChange={formik.handleChange}
+          onChange={(e)=>{
+            formik.handleChange(e);
+            setTypeSelected(Number(e.target.value))
+          }}
           onBlur={formik.handleBlur}
           className="input-field">
-          <option value="express">Express</option>
-          <option value="normal">Normal</option>
+          {
+            servicios[serviceSelected].tipos.map((tipo:any) => {
+              return <option value={tipo.value}>{tipo.nombre}</option>
+            })
+          }
         </select>
       </td>
       <td>
@@ -35,15 +52,19 @@ const ServicioRow = (props: any) => {
           onBlur={formik.handleBlur} />
       </td>
       <td>
-        Kilogramos
-      </td>
-      <td>
         {
-          index
+          formik.values.pedidos[index].servicio === 'lavanderia' ? 'Kg' : 'Unidades'
         }
       </td>
       <td>
-        $48.00
+        {
+          `$${servicios[serviceSelected].tipos[typeSelected].precio}.00`
+        }
+      </td>
+      <td>
+        {
+          `$${servicios[serviceSelected].tipos[typeSelected].precio * formik.values.pedidos[index].cantidad}.00`
+        }
       </td>
       {/* <td>
       <input type="button" onClick={() => {
