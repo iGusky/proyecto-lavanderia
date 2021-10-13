@@ -1,9 +1,9 @@
-import VentaComponent from "./components/VentaComponent";
+import AppRouter from "./router/AppRouter";
 
 function App() {
   return (
     <div>
-      <VentaComponent/>
+      <AppRouter/>
     </div>
   );
 }
