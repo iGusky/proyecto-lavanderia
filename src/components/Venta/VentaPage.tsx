@@ -3,11 +3,11 @@ import { useState } from 'react';
 import * as Yup from 'yup'
 import ServicioRow from './ServicioRow';
 
-import '../styles/VentaPage.css'
+import '../../styles/VentaPage.css'
 
-import data from '../data/precios.json';
+import data from '../../data/precios.json';
 
-const VentaComponent = () => {
+const VentaPage = () => {
   const pedidoInicial = { servicio: '', tipo: '', cantidad: '0', unidad: '', precioUnitario: 0, subtotal: 0 }
   const [pedidosCantidad, setPedidosCantidad] = useState(0)
   const formik = useFormik({
@@ -120,4 +120,4 @@ const VentaComponent = () => {
   )
 }
 
-export default VentaComponent
+export default VentaPage
