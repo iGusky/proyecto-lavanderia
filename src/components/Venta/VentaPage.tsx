@@ -9,6 +9,7 @@ import data from '../../data/precios.json';
 
 const VentaPage = () => {
   const pedidoInicial = { servicio: '0', tipo: '0', cantidad: 0, unidad: 'Kilos', precioUnitario: 0, subtotal: 0 }
+  const [pedidos, setPedidos] = useState([ pedidoInicial ])
   const [pedidosCantidad, setPedidosCantidad] = useState(0)
   const [total, setTotal] = useState(0);
 
@@ -20,7 +21,6 @@ const VentaPage = () => {
       nombreCliente: '',
       direccionCliente: '',
       telefonoCliente: '',
-      pedidos: [pedidoInicial],
       pago: 0
     },
     validationSchema: Yup.object({
@@ -82,11 +82,12 @@ const VentaPage = () => {
           </thead>
           <tbody>
             {
-              formik.values.pedidos.map((value, index) => {
+              pedidos.map((value, index) => {
                 return (
                   <ServicioRow
                     key={index}
-                    formik={formik}
+                    pedidos={pedidos}
+                    setPedidos={setPedidos}
                     index={index}
                     data={data}
                   />
@@ -102,7 +103,7 @@ const VentaPage = () => {
           type="button"
           onClick={() => {
             setPedidosCantidad(pedidosCantidad + 1);
-            formik.values.pedidos.push(pedidoInicial)
+            setPedidos([...pedidos, pedidoInicial])
           }}
           className="btn float-right mt-1"
           value="Nuevo"

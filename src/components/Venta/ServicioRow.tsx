@@ -1,36 +1,42 @@
 import { useEffect, useState } from 'react';
 const ServicioRow = (props: any) => {
-  const { formik, index, data } = props;
-
-  const [serviceSelected, setServiceSelected] = useState(0);
-  const [typeSelected, setTypeSelected] = useState(0);
+  const { pedidos, setPedidos, index, data } = props;
 
   const { servicios } = data;
-  const actualRow = formik.values.pedidos[index];
 
-  useEffect(() => {
-    console.log('redibujando...')
-    // formik.values.pedidos.forEach(pedido => {
-    //   console.log(pedido.subtotal);
-    // });
-  }, [])
+  const [rowPedido, setRowPedido] = useState({ servicio: '0', tipo: '0', cantidad: '0', unidad: 'Kilos', precioUnitario: 0, subtotal: 0 });
+
+  function handleChangeServicio (e: any) {
+    console.log('handleChange');
+    setRowPedido({
+      ...rowPedido,
+      [e.target.name]: e.target.value,
+      unidad: e.target.name && e.target.value === '0'  ? 'Kilos' : 'Unidades'
+    })
+  }
+  function handleChangeTipo (e: any) {
+    console.log('handleChange');
+    setRowPedido({
+      ...rowPedido,
+      [e.target.name]: e.target.value,
+      tipo: servicios[rowPedido.servicio].tipos[e].precio
+    })
+  }
 
 
   return (
     <tr key={index}>
       <td>
         <select
-          name={`pedidos[${index}].servicio`}
-          value={actualRow.servicio}
+          name={`servicio`}
+          value={rowPedido.servicio}
           onChange={(e) => {
-            formik.handleChange(e);
-            setServiceSelected(Number(e.target.value));
-            formik.handleChange({target: {
-              name: `pedidos[${index}].unidad`,
-              value: e.target.value !== '0' ? 'Unidades' : 'Kilos'
-            }})
+            handleChangeServicio(e);
+            setTimeout(() => {
+              
+            }, 300);
+            // updateUnidad(e);
           }}
-          onBlur={formik.handleBlur}
           className="input-field">
           {
             servicios.map((servicio: any) => {
@@ -41,20 +47,14 @@ const ServicioRow = (props: any) => {
       </td>
       <td>
         <select
-          name={`pedidos[${index}].tipo`}
-          value={actualRow.tipo}
+          name={`tipo`}
+          value={rowPedido.tipo}
           onChange={(e) => {
-            formik.handleChange(e);
-            setTypeSelected(Number(e.target.value))
-            formik.handleChange({target: {
-              name: `pedidos[${index}].subtotal`,
-              value: servicios[serviceSelected].tipos[Number(e.target.value)].precio * actualRow.cantidad
-            }})
+            handleChangeTipo(e)
           }}
-          onBlur={formik.handleBlur}
           className="input-field">
           {
-            servicios[serviceSelected].tipos.map((tipo: any) => {
+            servicios[rowPedido.servicio].tipos.map((tipo: any) => {
               return <option value={tipo.value}>{tipo.nombre}</option>
             })
           }
@@ -63,36 +63,36 @@ const ServicioRow = (props: any) => {
       <td>
         <input
           type="number"
-          name={`pedidos[${index}].cantidad`}
+          name={`cantidad`}
           className="input-field"
-          value={actualRow.cantidad}
+          value={rowPedido.cantidad}
           onChange={(e) => {
-            formik.handleChange(e)
-            formik.handleChange({target: {
-              name: `pedidos[${index}].subtotal`,
-              value: servicios[serviceSelected].tipos[typeSelected].precio * Number(e.target.value)
-            }})
+            handleChange(e);
           }
           }
-          onBlur={formik.handleBlur}
+
           min='0'
         />
       </td>
       <td>
         {
-          actualRow.unidad
+          // rowPedido.servicio === '0' ? 'Kilos' : 'Unidades'
+          rowPedido.unidad
         }
       </td>
       <td>
         {
-          `$${servicios[serviceSelected].tipos[typeSelected].precio}.00`
+
+          `$${servicios[rowPedido.servicio].tipos[rowPedido.tipo].precio}.00`
+          // `$${servicios[serviceSelected].tipos[typeSelected].precio}.00`
         }
       </td>
       <td
-        
+
       >
         {
-          `$${actualRow.subtotal}.00`
+          rowPedido.subtotal
+          // `$${actualRow.subtotal}.00`
         }
       </td>
     </tr>
