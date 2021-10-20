@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup'
 import ServicioRow from './ServicioRow';
 
@@ -8,15 +8,19 @@ import '../../styles/VentaPage.css'
 import data from '../../data/precios.json';
 
 const VentaPage = () => {
-  const pedidoInicial = { servicio: '', tipo: '', cantidad: '0', unidad: '', precioUnitario: 0, subtotal: 0 }
+  const pedidoInicial = { servicio: '0', tipo: '0', cantidad: 0, unidad: 'Kilos', precioUnitario: 0, subtotal: 0 }
   const [pedidosCantidad, setPedidosCantidad] = useState(0)
+  const [total, setTotal] = useState(0);
+
+
+ 
+
   const formik = useFormik({
     initialValues: {
       nombreCliente: '',
       direccionCliente: '',
       telefonoCliente: '',
       pedidos: [pedidoInicial],
-      total: 0,
       pago: 0
     },
     validationSchema: Yup.object({
@@ -91,6 +95,9 @@ const VentaPage = () => {
             }
           </tbody>
         </table>
+        <h3>
+          Total: ${total}
+        </h3>
         <input
           type="button"
           onClick={() => {
