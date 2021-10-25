@@ -13,7 +13,6 @@ const VentaPage = () => {
   const [total, setTotal] = useState(0);
 
 
- 
 
   const formik = useFormik({
     initialValues: {
@@ -28,6 +27,18 @@ const VentaPage = () => {
     }),
     onSubmit: (values) => console.log(values)
   })
+
+  useEffect(() => {
+    let auxtotal = 0;
+    formik.values.pedidos.forEach(pedido => {
+      console.log(pedido)
+      auxtotal += pedido.subtotal
+    });
+    console.log(auxtotal)
+    setTotal(auxtotal)
+  }, [formik.values])
+
+
   return (
     <div className="container">
       <h1>Venta</h1>
@@ -95,18 +106,21 @@ const VentaPage = () => {
             }
           </tbody>
         </table>
-        <h3>
-          Total: ${total}
-        </h3>
-        <input
-          type="button"
-          onClick={() => {
-            setPedidosCantidad(pedidosCantidad + 1);
-            formik.values.pedidos.push(pedidoInicial)
-          }}
-          className="btn float-right mt-1"
-          value="Nuevo"
-        />
+        <div className="table-footer">
+          <input
+            type="button"
+            onClick={() => {
+              setPedidosCantidad(pedidosCantidad + 1);
+              formik.values.pedidos.push(pedidoInicial)
+            }}
+            className="btn mt-1"
+            value="Nuevo"
+          />
+          <h3 className="ml-3">
+            <p>Total: $ {total}</p>
+          </h3>
+
+        </div>
         <h2>Pago</h2>
         <div className="input-group">
           <input
@@ -114,11 +128,13 @@ const VentaPage = () => {
             name="pago"
             id="pago"
             min="0"
+            max={total}
             className="input-field"
             value={formik.values.pago}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
+          <input type="button" onClick={()=>formik.handleChange({target: { name: 'pago', value: total }})} value="Pagar total" className="btn" />
         </div>
 
         <input type="submit" value="Generar pedido" className="btn" />
