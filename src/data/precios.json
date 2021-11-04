@@ -31,24 +31,49 @@
       "value": 1,
       "tipos": [
         {
-          "nombre": "Lavados normal",
+          "nombre": "Pantalón",
           "value": 0,
-          "precio": 13
+          "precio": 25
         },
         {
-          "nombre": "Lavados express",
+          "nombre": "Camisa",
           "value": 1,
-          "precio": 18
+          "precio": 25
         },
         {
-          "nombre": "Secados normal",
+          "nombre": "Blusa",
           "value": 2,
-          "precio": 11
+          "precio": 25
         },
         {
-          "nombre": "Secados express",
+          "nombre": "Falsa",
           "value": 3,
-          "precio": 16
+          "precio": 25
+        },
+        {
+          "nombre": "Saco",
+          "value": 4,
+          "precio": 45
+        },
+        {
+          "nombre": "Traje",
+          "value": 5,
+          "precio": 60
+        },
+        {
+          "nombre": "Conjunto",
+          "value": 6,
+          "precio": 53
+        },
+        {
+          "nombre": "Corbata",
+          "value": 7,
+          "precio": 20
+        },
+        {
+          "nombre": "Vestido",
+          "value": 8,
+          "precio": 70
         }
       ]
     }

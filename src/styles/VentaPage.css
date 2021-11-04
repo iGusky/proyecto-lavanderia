@@ -32,3 +32,11 @@ td, th {
 .select-field {
   border: none;
 }
+
+.table-footer {
+  display: flex;
+  flex-direction: row;
+  height: 70px;
+  align-items: center;
+  justify-content: end;
+}

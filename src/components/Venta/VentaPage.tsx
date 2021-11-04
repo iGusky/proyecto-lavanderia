@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup'
 import ServicioRow from './ServicioRow';
 
@@ -8,15 +8,18 @@ import '../../styles/VentaPage.css'
 import data from '../../data/precios.json';
 
 const VentaPage = () => {
-  const pedidoInicial = { servicio: '', tipo: '', cantidad: '0', unidad: '', precioUnitario: 0, subtotal: 0 }
+  const pedidoInicial = { servicio: '0', tipo: '0', cantidad: 0, unidad: 'Kilos', precioUnitario: 0, subtotal: 0 }
   const [pedidosCantidad, setPedidosCantidad] = useState(0)
+  const [total, setTotal] = useState(0);
+
+
+
   const formik = useFormik({
     initialValues: {
       nombreCliente: '',
       direccionCliente: '',
       telefonoCliente: '',
       pedidos: [pedidoInicial],
-      total: 0,
       pago: 0
     },
     validationSchema: Yup.object({
@@ -24,6 +27,18 @@ const VentaPage = () => {
     }),
     onSubmit: (values) => console.log(values)
   })
+
+  useEffect(() => {
+    let auxtotal = 0;
+    formik.values.pedidos.forEach(pedido => {
+      console.log(pedido)
+      auxtotal += pedido.subtotal
+    });
+    console.log(auxtotal)
+    setTotal(auxtotal)
+  }, [formik.values])
+
+
   return (
     <div className="container">
       <h1>Venta</h1>
@@ -91,15 +106,21 @@ const VentaPage = () => {
             }
           </tbody>
         </table>
-        <input
-          type="button"
-          onClick={() => {
-            setPedidosCantidad(pedidosCantidad + 1);
-            formik.values.pedidos.push(pedidoInicial)
-          }}
-          className="btn float-right mt-1"
-          value="Nuevo"
-        />
+        <div className="table-footer">
+          <input
+            type="button"
+            onClick={() => {
+              setPedidosCantidad(pedidosCantidad + 1);
+              formik.values.pedidos.push(pedidoInicial)
+            }}
+            className="btn mt-1"
+            value="Nuevo"
+          />
+          <h3 className="ml-3">
+            <p>Total: $ {total}</p>
+          </h3>
+
+        </div>
         <h2>Pago</h2>
         <div className="input-group">
           <input
@@ -107,11 +128,13 @@ const VentaPage = () => {
             name="pago"
             id="pago"
             min="0"
+            max={total}
             className="input-field"
             value={formik.values.pago}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
+          <input type="button" onClick={()=>formik.handleChange({target: { name: 'pago', value: total }})} value="Pagar total" className="btn" />
         </div>
 
         <input type="submit" value="Generar pedido" className="btn" />
