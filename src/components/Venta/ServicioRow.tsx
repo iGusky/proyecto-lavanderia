@@ -27,7 +27,7 @@ const ServicioRow = (props: any) => {
             setServiceSelected(Number(e.target.value));
             formik.handleChange({target: {
               name: `pedidos[${index}].unidad`,
-              value: e.target.value !== 'Lavanderia' ? 'Unidades' : 'Kilos'
+              value: e.target.value !== '0' ? 'Unidades' : 'Kilos'
             }})
           }}
           onBlur={formik.handleBlur}
