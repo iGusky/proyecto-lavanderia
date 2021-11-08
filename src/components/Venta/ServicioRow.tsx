@@ -25,6 +25,7 @@ const ServicioRow = (props: any) => {
           onChange={(e) => {
             formik.handleChange(e);
             setServiceSelected(Number(e.target.value));
+            setTypeSelected(0);
             formik.handleChange({target: {
               name: `pedidos[${index}].unidad`,
               value: e.target.value !== '0' ? 'Unidades' : 'Kilos'
@@ -50,6 +51,10 @@ const ServicioRow = (props: any) => {
               name: `pedidos[${index}].subtotal`,
               value: servicios[serviceSelected].tipos[Number(e.target.value)].precio * actualRow.cantidad
             }})
+            formik.handleChange({target: {
+              name: `pedidos[${index}].precio`,
+              value: servicios[serviceSelected].tipos[Number(e.target.value)].precio
+            }})
           }}
           onBlur={formik.handleBlur}
           className="input-field">
@@ -71,6 +76,10 @@ const ServicioRow = (props: any) => {
             formik.handleChange({target: {
               name: `pedidos[${index}].subtotal`,
               value: servicios[serviceSelected].tipos[typeSelected].precio * Number(e.target.value)
+            }})
+            formik.handleChange({target: {
+              name: `pedidos[${index}].precio`,
+              value: servicios[serviceSelected].tipos[typeSelected].precio
             }})
           }
           }

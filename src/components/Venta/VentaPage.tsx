@@ -6,9 +6,12 @@ import ServicioRow from './ServicioRow';
 import '../../styles/VentaPage.css'
 
 import data from '../../data/precios.json';
+import clienteAxios from '../../api/axios';
+
+
 
 const VentaPage = () => {
-  const pedidoInicial = { servicio: '0', tipo: '0', cantidad: 0, unidad: 'Kilos', precioUnitario: 0, subtotal: 0 }
+  const pedidoInicial = { servicio: '0', tipo: '0', cantidad: 0, unidad: 'Kilos', precio: 0, subtotal: 0 }
   const [pedidosCantidad, setPedidosCantidad] = useState(0)
   const [total, setTotal] = useState(0);
 
@@ -20,12 +23,20 @@ const VentaPage = () => {
       direccionCliente: '',
       telefonoCliente: '',
       pedidos: [pedidoInicial],
+      total: 0,
       pago: 0
     },
     validationSchema: Yup.object({
       nombreCliente: Yup.string().required('El nombre es obligatorio')
     }),
-    onSubmit: (values) => console.log(values)
+    onSubmit: async (values) => {
+      try {
+        const response = await clienteAxios.post('/ventas', values);
+        console.log(response);
+      } catch (error) {
+        console.error(error)
+      }
+    }
   })
 
   useEffect(() => {
@@ -36,6 +47,7 @@ const VentaPage = () => {
     });
     console.log(auxtotal)
     setTotal(auxtotal)
+    formik.setFieldValue('total', total);
   }, [formik.values])
 
 
@@ -134,7 +146,7 @@ const VentaPage = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          <input type="button" onClick={()=>formik.handleChange({target: { name: 'pago', value: total }})} value="Pagar total" className="btn" />
+          <input type="button" onClick={() => formik.handleChange({ target: { name: 'pago', value: total } })} value="Pagar total" className="btn" />
         </div>
 
         <input type="submit" value="Generar pedido" className="btn" />
