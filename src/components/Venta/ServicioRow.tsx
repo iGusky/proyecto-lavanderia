@@ -25,6 +25,7 @@ const ServicioRow = (props: any) => {
           onChange={(e) => {
             formik.handleChange(e);
             setServiceSelected(Number(e.target.value));
+            setTypeSelected(0);
             formik.handleChange({target: {
               name: `pedidos[${index}].unidad`,
               value: e.target.value !== '0' ? 'Unidades' : 'Kilos'
