@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const clienteAxios = axios.create({
-  baseURL: 'http://127.0.0.1:4000'
+  baseURL: 'https://lavanderia-backend.herokuapp.com'
 });
 
 export default clienteAxios;
