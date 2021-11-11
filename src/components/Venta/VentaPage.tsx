@@ -1,11 +1,13 @@
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup'
+import Swal from 'sweetalert2'
+
 import ServicioRow from './ServicioRow';
 
 import '../../styles/VentaPage.css'
 
-import data from '../../data/precios.json';
+import dataPrecios from '../../data/precios.json';
 import clienteAxios from '../../api/axios';
 
 
@@ -14,6 +16,7 @@ const VentaPage = () => {
   const pedidoInicial = { servicio: '0', tipo: '0', cantidad: 0, unidad: 'Kilos', precio: 0, subtotal: 0 }
   const [pedidosCantidad, setPedidosCantidad] = useState(0)
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -29,28 +32,41 @@ const VentaPage = () => {
     validationSchema: Yup.object({
       nombreCliente: Yup.string().required('El nombre es obligatorio')
     }),
-    onSubmit: async (values) => {
+    onSubmit: async (values, {resetForm}) => {
+      setLoading(true);
       try {
-        const response = await clienteAxios.post('/ventas', values);
-        console.log(response);
+        guardarVenta(values, resetForm);
+        setLoading(false);  
       } catch (error) {
+        setLoading(false);
         console.error(error)
       }
     }
   })
 
+  const guardarVenta = async (values:any, resetForm: Function) => {
+    const response = await clienteAxios.post('/ventas', values);
+    if(response.status === 200){
+      setLoading(false);
+      Swal.fire(
+        'Exito',
+        `Pedido guardado con la nota: ${response.data.nota}`,
+        'success'
+        );
+        resetForm();
+    }
+  }
+
   useEffect(() => {
     let auxtotal = 0;
     formik.values.pedidos.forEach(pedido => {
-      console.log(pedido)
       auxtotal += pedido.subtotal
     });
-    console.log(auxtotal)
     setTotal(auxtotal)
     formik.setFieldValue('total', total);
   }, [formik.values])
 
-
+  if(loading) return (<div className="spinner-container"><div className="lds-ring"><div></div><div></div><div></div><div></div></div></div>)
   return (
     <div className="container">
       <h1>Venta</h1>
@@ -111,7 +127,7 @@ const VentaPage = () => {
                     key={index}
                     formik={formik}
                     index={index}
-                    data={data}
+                    data={dataPrecios}
                   />
                 )
               })

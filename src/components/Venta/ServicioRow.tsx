@@ -8,14 +8,6 @@ const ServicioRow = (props: any) => {
   const { servicios } = data;
   const actualRow = formik.values.pedidos[index];
 
-  useEffect(() => {
-    console.log('redibujando...')
-    // formik.values.pedidos.forEach(pedido => {
-    //   console.log(pedido.subtotal);
-    // });
-  }, [])
-
-
   return (
     <tr key={index}>
       <td>
@@ -45,7 +37,12 @@ const ServicioRow = (props: any) => {
           name={`pedidos[${index}].tipo`}
           value={actualRow.tipo}
           onChange={(e) => {
-            formik.handleChange(e);
+            const valueIndex = Number(e.target.value);
+            const tipo = e.target.options[valueIndex].innerText;
+            formik.handleChange({target: {
+              name: e.target.name,
+              value: e.target.value
+            }});
             setTypeSelected(Number(e.target.value))
             formik.handleChange({target: {
               name: `pedidos[${index}].subtotal`,
