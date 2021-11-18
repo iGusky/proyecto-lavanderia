@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup'
 import Swal from 'sweetalert2'
-
+import Navbar from '../Navbar';
 import ServicioRow from './ServicioRow';
 
 import '../../styles/VentaPage.css'
@@ -68,7 +68,10 @@ const VentaPage = () => {
 
   if(loading) return (<div className="spinner-container"><div className="lds-ring"><div></div><div></div><div></div><div></div></div></div>)
   return (
+    
+
     <div className="container">
+      <Navbar />
       <h1>Venta</h1>
       <form
         onSubmit={formik.handleSubmit}
