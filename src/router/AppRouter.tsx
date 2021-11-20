@@ -1,8 +1,8 @@
-import React from 'react'
-
 import Navbar from '../components/Navbar';
 import VentaPage from '../components/Venta/VentaPage';
 import ListaVentasPage from '../components/ListaVentas/ListaVentasPage';
+import ContaduriaPage from '../components/Contaduria/ContaduriaPage';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,6 +16,7 @@ const AppRouter = () => {
       <Switch>
         <Route exact path="/" component={VentaPage} />
         <Route exact path="/ventas" component={ListaVentasPage} />
+        <Route exact path="/contaduria" component={ContaduriaPage}/>
       </Switch>
     </Router>
   )
