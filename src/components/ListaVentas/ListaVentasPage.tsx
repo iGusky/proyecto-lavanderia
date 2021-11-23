@@ -38,6 +38,11 @@ export interface Pedido {
   _id: string;
 }
 
+export interface Login {
+  mensaje: string;
+  token: string;
+}
+
 const ListaVentasPage = () => {
   /*const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -54,18 +59,19 @@ const ListaVentasPage = () => {
       });
   }, [setList]);*/
   const [actualPage, setActualPage] = useState(1);
+  const [buscar, setBuscar] = useState("");
   const [listaVentas, setList] = useState([] as unknown as Welcome);
   const [mostrando, setMostrando] = useState("Escoga las ventas a visualizar");
   const [url, setUrl] = useState("");
 
-  useEffect(()=>{
+  useEffect(() => {
     todaData();
-  }, [url, actualPage])
+  }, [url, actualPage]);
 
   const todaData = async () => {
     try {
       const response = await Axios({
-        url: url+"page="+actualPage,
+        url: url + "page=" + actualPage,
       });
       setList(response.data);
     } catch (error) {
@@ -84,16 +90,28 @@ const ListaVentasPage = () => {
   }
 
   function handleSinPagoData() {
-    setUrl("https://lavanderia-backend.herokuapp.com/ventas/?state=SIN_PAGO&estadoEntrega=false&");
+    setUrl(
+      "https://lavanderia-backend.herokuapp.com/ventas/?state=SIN_PAGO&estadoEntrega=false&"
+    );
     setMostrando("Mostrando ventas sin pagar");
     setActualPage(1);
   }
 
   function handleSinEntregarData() {
-    setUrl("https://lavanderia-backend.herokuapp.com/ventas/?state=PAGADO_TOTALMENTE&estadoEntrega=false&");
+    setUrl(
+      "https://lavanderia-backend.herokuapp.com/ventas/?state=PAGADO_TOTALMENTE&estadoEntrega=false&"
+    );
     setMostrando("Mostrando ventas sin entregar");
     setActualPage(1);
-  } 
+  }
+
+  function handleBuscar() {
+    setUrl(
+      "https://lavanderia-backend.herokuapp.com/ventas?nota=" + buscar + "&"
+    );
+    setMostrando("Resultado de busqueda");
+    setActualPage(1);
+  }
 
   function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -103,7 +121,7 @@ const ListaVentasPage = () => {
     Axios.put("https://lavanderia-backend.herokuapp.com/ventas/" + id, {
       total: total,
       pago: total - pago,
-      estadoPago: "PAGADO_TOTALMENTE"
+      estadoPago: "PAGADO_TOTALMENTE",
     })
       .then((response) => {
         console.log(response);
@@ -131,9 +149,26 @@ const ListaVentasPage = () => {
     <div className="container">
       <div>
         <h1>Ventas</h1>
-        <button className="myButton" onClick={handleSinEntregarData}>Pendientes de entregar</button> 
-        <button className="myButton" onClick={handleSinPagoData}>Pendientes de pago</button> 
-        <button className="myButton" onClick={handleTodaData}>Mostrar todos</button>
+        <button className="myButton" onClick={handleSinEntregarData}>
+          Pendientes de entregar
+        </button>
+        <button className="myButton" onClick={handleSinPagoData}>
+          Pendientes de pago
+        </button>
+        <button className="myButton" onClick={handleTodaData}>
+          Mostrar todos
+        </button>
+        <input
+          type="text"
+          name="numeroNota"
+          placeholder="Busqueda por nota"
+          className="input-field"
+          value={buscar}
+          onChange={(e) => setBuscar(e.target.value)}
+        />
+        <button className="myButton" onClick={handleBuscar}>
+          Buscar
+        </button>
         <h2>{mostrando}</h2>
         <div>
           <Pagination
@@ -183,12 +218,16 @@ const ListaVentasPage = () => {
                   {listValue.estadoEntrega
                     ? ""
                     : listValue.pago == listValue.total && (
-                        <button className="myButton" onClick={() => entregar(listValue._id)}>
+                        <button
+                          className="myButton"
+                          onClick={() => entregar(listValue._id)}
+                        >
                           Entregar
                         </button>
                       )}
                   {listValue.pago < listValue.total && (
-                    <button className="myButton"
+                    <button
+                      className="myButton"
                       onClick={() =>
                         pagar(listValue.pago, listValue._id, listValue.total)
                       }

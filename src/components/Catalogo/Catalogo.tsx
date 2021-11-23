@@ -24,6 +24,7 @@ const Catalogo = () => {
   const [nombre, setNombre] = useState("");
   const [tipo, setTipo] = useState("");
   const [precio, setPrecio] = useState(0);
+  let token = (sessionStorage.getItem('token')) as string;
   const handleOpen = () => {
     setOpen(true);
   };
@@ -41,9 +42,14 @@ const Catalogo = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await Axios({
-          url: "https://lavanderia-backend.herokuapp.com/catalogos",
-        });
+        const response = await Axios(
+          "https://lavanderia-backend.herokuapp.com/catalogos",
+          {
+            headers: {
+              "access-token": token
+            }
+          }
+        );
         setList(response.data);
       } catch (error) {
         console.log(error);
@@ -54,8 +60,12 @@ const Catalogo = () => {
 
   const obtenerCatalogo = async () => {
     try {
-      const response = await Axios({
-        url: "https://lavanderia-backend.herokuapp.com/catalogos",
+      const response = await Axios("https://lavanderia-backend.herokuapp.com/catalogos",
+      {
+        headers: {
+          "access-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNjM3Njk5Nzg1LCJleHAiOjE2Mzc3MDEyMjV9.mwTH31T9GSGtMdLQnLaGYfUZN8shu4mUrBOktpTKCOE"
+        }
       });
       setList(response.data);
     } catch (error) {
@@ -71,6 +81,12 @@ const Catalogo = () => {
           nombre: nombre,
           tipo: tipo,
           precio: precio,
+        },
+        {
+          headers: {
+            "access-token":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNjM3Njk5Nzg1LCJleHAiOjE2Mzc3MDEyMjV9.mwTH31T9GSGtMdLQnLaGYfUZN8shu4mUrBOktpTKCOE"
+          }
         }
       );
       obtenerCatalogo();
@@ -88,6 +104,12 @@ const Catalogo = () => {
           nombre: nombre,
           tipo: tipo,
           precio: precio,
+        },
+        {
+          headers: {
+            "access-token":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNjM3Njk5Nzg1LCJleHAiOjE2Mzc3MDEyMjV9.mwTH31T9GSGtMdLQnLaGYfUZN8shu4mUrBOktpTKCOE"
+          }
         }
       );
       obtenerCatalogo();
@@ -102,7 +124,13 @@ const Catalogo = () => {
   const eliminarServicio = async (id: string) => {
     try {
       const response = await Axios.delete(
-        "https://lavanderia-backend.herokuapp.com/catalogos/" + id
+        "https://lavanderia-backend.herokuapp.com/catalogos/" + id,
+        {
+          headers: {
+            "access-token":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNjM3Njk5Nzg1LCJleHAiOjE2Mzc3MDEyMjV9.mwTH31T9GSGtMdLQnLaGYfUZN8shu4mUrBOktpTKCOE"
+          }
+        }
       );
       obtenerCatalogo();
     } catch (error) {
@@ -122,7 +150,12 @@ const Catalogo = () => {
     setPrecio(evt.target.value);
   }
 
-  function handleOpenEdit(id: string, nombre:string, tipo: string, precio: number) {
+  function handleOpenEdit(
+    id: string,
+    nombre: string,
+    tipo: string,
+    precio: number
+  ) {
     handleOpen();
     setNombre(tipo);
     setTipo(nombre);
@@ -137,7 +170,10 @@ const Catalogo = () => {
         <button className="myButton" type="button" onClick={handleOpen}>
           Nuevo Servicio
         </button>
-        <div> <br /></div>
+        <div>
+          {" "}
+          <br />
+        </div>
         <Modal
           open={open}
           onClose={handleClose}
@@ -147,7 +183,12 @@ const Catalogo = () => {
           <Box sx={style}>
             <form onSubmit={handleClose}>
               <div>
-              {sessionStorage.getItem("idEditar") != undefined ?<h1>Editar servicio</h1>:<h1>Nuevo servicio</h1>}Introduce el nombre:
+                {sessionStorage.getItem("idEditar") != undefined ? (
+                  <h1>Editar servicio</h1>
+                ) : (
+                  <h1>Nuevo servicio</h1>
+                )}
+                Introduce el nombre:
               </div>
               <input value={tipo} onChange={updateTipo} />
               <div>
@@ -207,7 +248,14 @@ const Catalogo = () => {
                   {true ? (
                     <button
                       className="myButton2"
-                      onClick={() => handleOpenEdit(item._id, item.tipo, item.nombre, item.precio)}
+                      onClick={() =>
+                        handleOpenEdit(
+                          item._id,
+                          item.tipo,
+                          item.nombre,
+                          item.precio
+                        )
+                      }
                     >
                       Editar
                     </button>
