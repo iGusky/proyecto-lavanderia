@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import clienteAxios from '../../api/axios';
 import { Ingresos } from '../../interfaces/ingresosInterface';
 import Spinner from '../ui/Spinner';
-import IngresosAnuales from './IngresosAnuales';
+import IngresosPorServicio from './IngresosPorServicio';
 
 function ContaduriaPage() {
   const initialValues: Ingresos = {} 
@@ -10,14 +10,16 @@ function ContaduriaPage() {
   const fecha = new Date();
 
   const [ingresoMensual, setIngresoMensual] = useState(initialValues);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const consultarIngresos = async (mes:String) => {
+    setLoading(true);
     const result =  await clienteAxios.get('/ingresos/mensual');
     if(result){
       setIngresoMensual(result.data);
       console.log(ingresoMensual)
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -28,10 +30,9 @@ function ContaduriaPage() {
 
   return (
     <div className="container">
-      <h1>Desde Contaduria</h1>
-      <p>Ingresos de {ingresoMensual.mes} de {ingresoMensual.year}</p>
-      <h2>{ '$' + ingresoMensual.total?.toFixed(2) }</h2>
-      <IngresosAnuales />
+      <h1>Resumen de Ingresos</h1>
+      <IngresosPorServicio/>
+      
     </div>
   )
 }
