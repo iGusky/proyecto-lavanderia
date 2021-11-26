@@ -38,6 +38,11 @@ export interface Pedido {
   _id: string;
 }
 
+export interface Login {
+  mensaje: string;
+  token: string;
+}
+
 const ListaVentasPage = () => {
   /*const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -54,60 +59,19 @@ const ListaVentasPage = () => {
       });
   }, [setList]);*/
   const [actualPage, setActualPage] = useState(1);
+  const [buscar, setBuscar] = useState("");
   const [listaVentas, setList] = useState([] as unknown as Welcome);
-  const [mostrando, setMostrando] = useState("Mostrando pedidos sin entregar");
+  const [mostrando, setMostrando] = useState("Escoga las ventas a visualizar");
+  const [url, setUrl] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await Axios({
-          url: "https://lavanderia-backend.herokuapp.com/ventas/?state=PAGADO_TOTALMENTE&estadoEntrega=false",
-        });
-        setList(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, [setList]);
-
-  const loadData = async (nextPage: number) => {
-    try {
-      const response = await Axios({
-        url: "https://lavanderia-backend.herokuapp.com/ventas?page=" + nextPage,
-      });
-      setList(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    todaData();
+  }, [url, actualPage]);
 
   const todaData = async () => {
     try {
       const response = await Axios({
-        url: "https://lavanderia-backend.herokuapp.com/ventas?page=1",
-      });
-      setList(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const sinPagoData = async () => {
-    try {
-      const response = await Axios({
-        url: "https://lavanderia-backend.herokuapp.com/ventas/?state=SIN_PAGO&estadoEntrega=false",
-      });
-      setList(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const sinEntregarData = async () => {
-    try {
-      const response = await Axios({
-        url: "https://lavanderia-backend.herokuapp.com/ventas/?state=PAGADO_TOTALMENTE&estadoEntrega=false",
+        url: url + "page=" + actualPage,
       });
       setList(response.data);
     } catch (error) {
@@ -117,40 +81,37 @@ const ListaVentasPage = () => {
 
   function handlePageChange(nextPage: number) {
     setActualPage(nextPage);
-    loadData(nextPage);
   }
 
   function handleTodaData() {
-    setMostrando("Mostrando todos los pedidos");
+    setUrl("https://lavanderia-backend.herokuapp.com/ventas?");
+    setMostrando("Mostrando todos las ventas");
     setActualPage(1);
-    todaData();
   }
 
   function handleSinPagoData() {
-    setMostrando("Mostrando pedidos sin pagar");
+    setUrl(
+      "https://lavanderia-backend.herokuapp.com/ventas/?state=SIN_PAGO&estadoEntrega=false&"
+    );
+    setMostrando("Mostrando ventas sin pagar");
     setActualPage(1);
-    sinPagoData();
   }
 
   function handleSinEntregarData() {
-    setMostrando("Mostrando pedidos sin entregar");
+    setUrl(
+      "https://lavanderia-backend.herokuapp.com/ventas/?state=PAGADO_TOTALMENTE&estadoEntrega=false&"
+    );
+    setMostrando("Mostrando ventas sin entregar");
     setActualPage(1);
-    sinEntregarData();
   }
 
-  const [filtrar, setFiltro] = useState(() => {
-    const fetchData = async () => {
-      try {
-        const response = await Axios({
-          url: "https://lavanderia-backend.herokuapp.com/ventas",
-        });
-        setList(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  });
+  function handleBuscar() {
+    setUrl(
+      "https://lavanderia-backend.herokuapp.com/ventas?nota=" + buscar + "&"
+    );
+    setMostrando("Resultado de busqueda");
+    setActualPage(1);
+  }
 
   function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -188,9 +149,26 @@ const ListaVentasPage = () => {
     <div className="container">
       <div>
         <h1>Ventas</h1>
-        <button className="myButton" onClick={handleSinEntregarData}>Pendientes de entregar</button> 
-        <button className="myButton" onClick={handleSinPagoData}>Pendientes de pago</button> 
-        <button className="myButton" onClick={handleTodaData}>Mostrar todos</button>
+        <button className="myButton" onClick={handleSinEntregarData}>
+          Pendientes de entregar
+        </button>
+        <button className="myButton" onClick={handleSinPagoData}>
+          Pendientes de pago
+        </button>
+        <button className="myButton" onClick={handleTodaData}>
+          Mostrar todos
+        </button>
+        <input
+          type="text"
+          name="numeroNota"
+          placeholder="Busqueda por nota"
+          className="input-field"
+          value={buscar}
+          onChange={(e) => setBuscar(e.target.value)}
+        />
+        <button className="myButton" onClick={handleBuscar}>
+          Buscar
+        </button>
         <h2>{mostrando}</h2>
         <div>
           <Pagination
@@ -240,12 +218,16 @@ const ListaVentasPage = () => {
                   {listValue.estadoEntrega
                     ? ""
                     : listValue.pago == listValue.total && (
-                        <button onClick={() => entregar(listValue._id)}>
+                        <button
+                          className="myButton"
+                          onClick={() => entregar(listValue._id)}
+                        >
                           Entregar
                         </button>
                       )}
                   {listValue.pago < listValue.total && (
                     <button
+                      className="myButton"
                       onClick={() =>
                         pagar(listValue.pago, listValue._id, listValue.total)
                       }

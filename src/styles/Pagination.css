@@ -20,6 +20,28 @@
 	top:1px;
 }
 
+.myButton2 {
+	background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+	background-color:#f9f9f9;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#206fb3;
+	font-family:Arial;
+	font-size:11px;
+	font-weight:bold;
+	padding:5px 15px;
+	text-decoration:none;
+}
+.myButton2:hover {
+	background:linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+	background-color:#e9e9e9;
+}
+.myButton2:active {
+	position:relative;
+	top:1px;
+}
+
 
 .sticky-table-cell{
     display: table-cell;
