@@ -22,8 +22,8 @@ code {
   padding: 10px;
 }
 .container {
-  max-width: 750px;
-  margin: 0 auto;
+  margin-left: 250px;
+  width: 75%;
 }
 .max-width {
   max-width: 100%;

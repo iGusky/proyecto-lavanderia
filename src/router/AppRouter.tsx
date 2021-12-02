@@ -8,17 +8,20 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
+import '../styles/AppRouter.css'
 
 const AppRouter = () => {
   return (
     <Router>
-      <Navbar />
-      <Switch>
-        <Route exact path="/" component={VentaPage} />
-        <Route exact path="/ventas" component={ListaVentasPage} />
-        <Route exact path="/catalogo" component={CatalogoPage} />
-        <Route exact path="/contaduria" component={ContaduriaPage}/>
-      </Switch>
+      <div className="layout">
+        <Navbar />
+        <Switch>
+          <Route exact path="/" component={VentaPage} />
+          <Route exact path="/ventas" component={ListaVentasPage} />
+          <Route exact path="/catalogo" component={CatalogoPage} />
+          <Route exact path="/contaduria" component={ContaduriaPage} />
+        </Switch>
+      </div>
     </Router>
   )
 }
