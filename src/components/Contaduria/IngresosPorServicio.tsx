@@ -47,7 +47,7 @@ const IngresosPorServicio = () => {
     
   }, [servicioSeleccionado])
   return (
-    <div className='container'>
+    <div>
       <form>
         <label htmlFor="servicio">Seleccione un servicio </label>
         <select name="servicio" id="servicio" onChange={handleChange}  defaultValue={0}>
