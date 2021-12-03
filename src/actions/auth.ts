@@ -35,3 +35,19 @@ export const login = (token:any) => {
     }
   }
 }
+
+export const startLogout = () => {
+  return (dispatch ) => {
+    dispatch(logout())
+    Swal.fire({
+      icon: 'info',
+      title: 'Sesión cerrada'
+    })
+  }
+}
+
+export const logout = () => {
+  return {
+    type: 'logout'
+  }
+}

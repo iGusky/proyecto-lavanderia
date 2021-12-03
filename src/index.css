@@ -20,13 +20,22 @@ code {
   font-weight: 700;
   border-radius: 5px;
   padding: 10px;
+  transition: all .2s ease-in-out;
+}
+.btn-danger {
+  background-color: rgb(197, 30, 30);
+  font-size: 1.1rem;
+  border-radius: 0px;
+}
+.btn:hover {
+  filter: brightness(0.8);
 }
 .container {
   margin-left: 250px;
   width: 75%;
 }
 .max-width {
-  max-width: 100%;
+  width: 100%;
 }
 .float-right {
   float: right;
