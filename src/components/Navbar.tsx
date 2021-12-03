@@ -11,7 +11,7 @@ const Navbar = (props: any) => {
       <nav className="navbar">
         <div className="navbar__logo__container">
           <div className="navbar__logo__image">
-            <img src={logo} alt="Logo" />
+            {/* <img src={logo} alt="Logo" /> */}
           </div>
         </div>
         <div className="navbar__link-container">

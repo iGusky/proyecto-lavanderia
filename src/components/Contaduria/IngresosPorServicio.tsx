@@ -18,7 +18,17 @@ const IngresosPorServicio = () => {
 
   const consultarIngresos = async () => {
     setLoading(true);
-    const { data } = await clienteAxios.get(`/ingresos/mensual?servicio=${servicioSeleccionado}`);
+    var token: string = ''
+    if( sessionStorage.getItem('token')){
+      token = sessionStorage.getItem('token')!;
+    }
+    const response = await clienteAxios.get(`/ingresos/mensual?servicio=${servicioSeleccionado}`,{
+      headers: {
+        'access-token': token
+      }
+    });
+    console.log(response)
+    const {data} = response
     await setIngresos(data);
     cagarData(data);
   }
