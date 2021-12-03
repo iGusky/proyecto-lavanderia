@@ -42,7 +42,6 @@ const GraficaPorServicio = (props: propsInterface) => {
     }
   };
   useEffect(() => {
-    console.log(data);
   }, [data])
 
   return (

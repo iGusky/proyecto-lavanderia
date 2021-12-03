@@ -3,15 +3,17 @@ import { Link, NavLink } from 'react-router-dom'
 import '../styles/Navbar.css'
 import logo from '../images/Logo Anai Lavanderia Transparencia.png'
 import { ContaduriaIcon, RealizarVentaIcon, ListarVentasIcon, CatalogoIcon } from './ui/Icons';
+import LogoutButton from './ui/LogoutButton';
+import { useSelector } from 'react-redux';
 
 const Navbar = (props: any) => {
-  // const { children } = props;
+  const { token } = useSelector((state:any)=>state);
   return (
     <div className="layout">
       <nav className="navbar">
         <div className="navbar__logo__container">
           <div className="navbar__logo__image">
-            <img src={logo} alt="Logo" />
+            {/* <img src={logo} alt="Logo" /> */}
           </div>
         </div>
         <div className="navbar__link-container">
@@ -36,7 +38,9 @@ const Navbar = (props: any) => {
             <ContaduriaIcon />
             <div>Contaduria</div>
           </NavLink>
-
+          {
+            token && <LogoutButton/>
+          }
         </div>
       </nav>
     </div>

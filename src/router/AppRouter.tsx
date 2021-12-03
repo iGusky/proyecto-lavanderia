@@ -6,20 +6,50 @@ import ContaduriaPage from '../components/Contaduria/ContaduriaPage';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Redirect
 } from 'react-router-dom';
 import '../styles/AppRouter.css'
+import PublicRoute from './PublicRoute';
+import { useEffect, useState } from 'react';
+import AuthRouter from './AuthRouter';
+import PrivateRoute from './PrivateRoute';
+import { useDispatch, useSelector } from "react-redux";
 
 const AppRouter = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [checking, setChecking] = useState(true);
+  const state = useSelector((state: any) => state);
   return (
     <Router>
       <div className="layout">
         <Navbar />
         <Switch>
-          <Route exact path="/" component={VentaPage} />
-          <Route exact path="/ventas" component={ListaVentasPage} />
-          <Route exact path="/catalogo" component={CatalogoPage} />
-          <Route exact path="/contaduria" component={ContaduriaPage} />
+          <PublicRoute
+            isAuthenticated={isLoggedIn}
+            path="/login"
+            component={AuthRouter}
+          />
+          <PublicRoute
+            isAuthenticated={isLoggedIn}
+            exact path="/"
+            component={VentaPage}
+          />
+          <PublicRoute
+            isAuthenticated={isLoggedIn}
+            path="/ventas"
+            component={ListaVentasPage}
+          />
+          <PublicRoute
+            isAuthenticated={isLoggedIn}
+            path="/catalogo"
+            component={CatalogoPage}
+          />
+          <PublicRoute
+            isAuthenticated={isLoggedIn}
+            path="/contaduria"
+            component={ContaduriaPage}
+          />
+
         </Switch>
       </div>
     </Router>
