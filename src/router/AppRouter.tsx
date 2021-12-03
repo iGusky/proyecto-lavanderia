@@ -6,25 +6,19 @@ import ContaduriaPage from '../components/Contaduria/ContaduriaPage';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
   Redirect
 } from 'react-router-dom';
 import '../styles/AppRouter.css'
-import Login from '../components/Login/Login';
 import PublicRoute from './PublicRoute';
 import { useEffect, useState } from 'react';
 import AuthRouter from './AuthRouter';
 import PrivateRoute from './PrivateRoute';
+import { useDispatch, useSelector } from "react-redux";
 
 const AppRouter = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    if(sessionStorage.getItem('token')){ 
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [setIsLoggedIn])
+  const [checking, setChecking] = useState(true);
+  const state = useSelector((state: any) => state);
   return (
     <Router>
       <div className="layout">
@@ -34,7 +28,6 @@ const AppRouter = () => {
             isAuthenticated={isLoggedIn}
             path="/login"
             component={AuthRouter}
-            setIsLoggedIn={setIsLoggedIn}
           />
           <PublicRoute
             isAuthenticated={isLoggedIn}
@@ -46,17 +39,17 @@ const AppRouter = () => {
             path="/ventas"
             component={ListaVentasPage}
           />
-          <PrivateRoute
+          <PublicRoute
             isAuthenticated={isLoggedIn}
             path="/catalogo"
-             component={CatalogoPage}
+            component={CatalogoPage}
           />
-          <PrivateRoute
+          <PublicRoute
             isAuthenticated={isLoggedIn}
-            path="/contaduria" 
+            path="/contaduria"
             component={ContaduriaPage}
           />
-          <Redirect to="/" />
+
         </Switch>
       </div>
     </Router>

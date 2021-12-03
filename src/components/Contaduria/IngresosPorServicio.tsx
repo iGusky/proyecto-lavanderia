@@ -27,7 +27,7 @@ const IngresosPorServicio = () => {
         'access-token': token
       }
     });
-    console.log(response)
+
     const {data} = response
     await setIngresos(data);
     cagarData(data);
