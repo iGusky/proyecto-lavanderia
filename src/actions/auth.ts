@@ -4,7 +4,7 @@ import { ResponseData } from "../interfaces/responseInterface"
 
 export const startLoginPassword = (password:string) => {
   return (dispatch)=> {
-    clienteAxios.post<ResponseData>('/auth', {
+    clienteAxios.post<ResponseData>('https://lavanderia-backend.herokuapp.com/auth', {
       user: "administrador",
       password
     }).then( ({data}) => {

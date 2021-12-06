@@ -113,11 +113,23 @@ const ListaVentasPage = () => {
     setActualPage(1);
   }
 
+  const actData = async () => {
+    try {
+      const response = await Axios({
+        url: url + "page=" + actualPage,
+      });
+      setList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  async function pagar(pago: number, id: string, total: number) {
+  async function pagar(pago: number, id: string, total: number, pedidos: Pedido[]
+  ) {
     Axios.put("https://lavanderia-backend.herokuapp.com/ventas/" + id, {
       total: total,
       pago: total - pago,
@@ -125,24 +137,38 @@ const ListaVentasPage = () => {
     })
       .then((response) => {
         console.log(response);
+        for (let listValue of pedidos) {
+          console.log(listValue.servicio);
+          console.log(listValue.tipo);
+          console.log(listValue.subtotal);
+          Axios.put("https://lavanderia-backend.herokuapp.com/ingresos", {
+            servicio: listValue.servicio,
+            tipo: listValue.tipo,
+            monto: listValue.subtotal,
+          })
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+        actData();
       })
       .catch((error) => {
         console.log(error);
       });
-    await sleep(1000);
-    window.location.reload();
   }
 
   async function entregar(id: string) {
     Axios.put("https://lavanderia-backend.herokuapp.com/ventas?entregar=" + id)
       .then((response) => {
         console.log(response);
+        actData();
       })
       .catch((error) => {
         console.log(error);
       });
-    await sleep(1000);
-    window.location.reload();
   }
 
   return (
@@ -229,7 +255,12 @@ const ListaVentasPage = () => {
                     <button
                       className="myButton"
                       onClick={() =>
-                        pagar(listValue.pago, listValue._id, listValue.total)
+                        pagar(
+                          listValue.pago,
+                          listValue._id,
+                          listValue.total,
+                          listValue.pedidos
+                        )
                       }
                     >
                       Pagar
