@@ -3,6 +3,7 @@ import VentaPage from '../components/Venta/VentaPage';
 import ListaVentasPage from '../components/ListaVentas/ListaVentasPage';
 import CatalogoPage from '../components/Catalogo/Catalogo';
 import ContaduriaPage from '../components/Contaduria/ContaduriaPage';
+import GastosPage from '../components/Contaduria/GastosPage';
 import {
   BrowserRouter as Router,
   Switch,
@@ -49,7 +50,11 @@ const AppRouter = () => {
             path="/contaduria"
             component={ContaduriaPage}
           />
-
+		  <PublicRoute
+            isAuthenticated={isLoggedIn}
+            path="/gastos"
+            component={GastosPage}
+          />
         </Switch>
       </div>
     </Router>
