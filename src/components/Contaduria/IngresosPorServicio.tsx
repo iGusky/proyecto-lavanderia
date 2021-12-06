@@ -22,7 +22,7 @@ const IngresosPorServicio = () => {
     if( sessionStorage.getItem('token')){
       token = sessionStorage.getItem('token')!;
     }
-    const response = await clienteAxios.get(`/ingresos/mensual?servicio=${servicioSeleccionado}`,{
+    const response = await clienteAxios.get(`https://lavanderia-backend.herokuapp.com/ingresos/mensual?servicio=${servicioSeleccionado}`,{
       headers: {
         'access-token': token
       }

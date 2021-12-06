@@ -45,8 +45,31 @@ const VentaPage = () => {
   })
 
   const guardarVenta = async (values:any, resetForm: Function) => {
-    const response = await clienteAxios.post('/ventas', values);
+    console.log(values);
+    const response = await clienteAxios.post('https://lavanderia-backend.herokuapp.com/ventas', values);
     if(response.status === 200){
+      console.log(response);
+      if(values.total === values.pago){
+        for (let listValue of values.pedidos) { //Aqui se hacen los ingresos de cada servicio, quita los comentarios cuando se arregle lo de mandar los nombres de los servicios
+          console.log(listValue.servicio);
+          console.log(listValue.tipo);
+          console.log(listValue.subtotal);
+          /*clienteAxios.put("https://lavanderia-backend.herokuapp.com/ingresos", {
+            servicio: listValue.servicio,
+            tipo: listValue.tipo,
+            monto: listValue.subtotal,
+          })
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });*/
+        }
+      }
+      if(values.total !== values.pago){
+        console.log('No esta pagado');
+      }
       setLoading(false);
       Swal.fire(
         'Exito',
