@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Axios from "axios";
 import Pagination from "react-js-pagination";
 import "../../styles/Pagination.css";
 import ICatalogo from "../../interfaces/catalogoInterface";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import { useHistory } from "react-router";
 
 const Catalogo = () => {
   const style = {
@@ -24,7 +26,11 @@ const Catalogo = () => {
   const [nombre, setNombre] = useState("");
   const [tipo, setTipo] = useState("");
   const [precio, setPrecio] = useState(0);
-  let token = (sessionStorage.getItem('token')) as string;
+  const history = useHistory();
+  const { token } = useSelector((state:any)=> state);
+  if(!token){
+    history.push('/login')
+  }
   const handleOpen = () => {
     setOpen(true);
   };
@@ -63,8 +69,7 @@ const Catalogo = () => {
       const response = await Axios("https://lavanderia-backend.herokuapp.com/catalogos",
       {
         headers: {
-          "access-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNjM3Njk5Nzg1LCJleHAiOjE2Mzc3MDEyMjV9.mwTH31T9GSGtMdLQnLaGYfUZN8shu4mUrBOktpTKCOE"
+          "access-token": token
         }
       });
       setList(response.data);
@@ -84,8 +89,7 @@ const Catalogo = () => {
         },
         {
           headers: {
-            "access-token":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNjM3Njk5Nzg1LCJleHAiOjE2Mzc3MDEyMjV9.mwTH31T9GSGtMdLQnLaGYfUZN8shu4mUrBOktpTKCOE"
+            "access-token": token
           }
         }
       );
@@ -107,8 +111,7 @@ const Catalogo = () => {
         },
         {
           headers: {
-            "access-token":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNjM3Njk5Nzg1LCJleHAiOjE2Mzc3MDEyMjV9.mwTH31T9GSGtMdLQnLaGYfUZN8shu4mUrBOktpTKCOE"
+            "access-token": token
           }
         }
       );
@@ -127,8 +130,7 @@ const Catalogo = () => {
         "https://lavanderia-backend.herokuapp.com/catalogos/" + id,
         {
           headers: {
-            "access-token":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVjayI6dHJ1ZSwiaWF0IjoxNjM3Njk5Nzg1LCJleHAiOjE2Mzc3MDEyMjV9.mwTH31T9GSGtMdLQnLaGYfUZN8shu4mUrBOktpTKCOE"
+            "access-token": token
           }
         }
       );

@@ -20,10 +20,7 @@ function ContaduriaPage() {
   const history = useHistory();
 
   const consultarIngresos = async (mes: String) => {
-    var token: string = ''
-    if (sessionStorage.getItem('token')) {
-      token = sessionStorage.getItem('token')!;
-    }
+    
     setLoading(true);
     const result = await clienteAxios.get('https://lavanderia-backend.herokuapp.com/ingresos/mensual', {
       headers: {
