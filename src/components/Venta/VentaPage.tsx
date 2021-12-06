@@ -13,10 +13,12 @@ import clienteAxios from '../../api/axios';
 
 
 const VentaPage = () => {
-  const pedidoInicial = { servicio: '0', tipo: '0', cantidad: 0, unidad: 'Kilos', precio: 0, subtotal: 0 }
+
+  const [catalogo, setCatalogo] = useState({});
+  const pedidoInicial = { servicio: 'Lavanderia', tipo: 'Lavanderia normal', cantidad: 0, unidad: 'Kilos', precio: 0, subtotal: 0 }
   const [pedidosCantidad, setPedidosCantidad] = useState(0)
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
 
@@ -45,12 +47,21 @@ const VentaPage = () => {
   })
 
   const guardarVenta = async (values:any, resetForm: Function) => {
-    console.log(values);
     const response = await clienteAxios.post('https://lavanderia-backend.herokuapp.com/ventas', values);
     if(response.status === 200){
+      if( response.data.mensaje === 'Tipo de servicio inexistente')
+      {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: `${response.data.mensaje}`
+        });
+        return
+      }
       console.log(response);
       if(values.total === values.pago){
-        for (let listValue of values.pedidos) { //Aqui se hacen los ingresos de cada servicio, quita los comentarios cuando se arregle lo de mandar los nombres de los servicios
+        for (let listValue of values.pedidos) { 
+          //Aqui se hacen los ingresos de cada servicio, quita los comentarios cuando se arregle lo de mandar los nombres de los servicios
           console.log(listValue.servicio);
           console.log(listValue.tipo);
           console.log(listValue.subtotal);
@@ -80,7 +91,17 @@ const VentaPage = () => {
     }
   }
 
+  useEffect(()=> {
+    const getCatalogo = async () => {
+      const {data} = await clienteAxios.get('/catalogos');
+      setCatalogo(data);
+      setLoading(false);
+    }
+    getCatalogo();
+  },[])
+
   useEffect(() => {
+
     let auxtotal = 0;
     formik.values.pedidos.forEach(pedido => {
       auxtotal += pedido.subtotal
@@ -151,6 +172,7 @@ const VentaPage = () => {
                     formik={formik}
                     index={index}
                     data={dataPrecios}
+                    catalogo={catalogo}
                   />
                 )
               })
@@ -168,7 +190,7 @@ const VentaPage = () => {
             value="Nuevo"
           />
           <h3 className="ml-3">
-            <p>Total: $ {total}</p>
+            <p>Total: $ {total.toFixed(2)}</p>
           </h3>
 
         </div>
