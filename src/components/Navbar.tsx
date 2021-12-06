@@ -38,9 +38,16 @@ const Navbar = (props: any) => {
             <ContaduriaIcon />
             <div>Contaduria</div>
           </NavLink>
+
+		 <NavLink className="navbar__link-item" to="/gastos" activeClassName="active">
+            <ContaduriaIcon />
+            <div>Gastos</div>
+          </NavLink>
+
           {
             token && <LogoutButton/>
           }
+
         </div>
       </nav>
     </div>
