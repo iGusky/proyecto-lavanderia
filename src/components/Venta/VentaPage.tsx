@@ -65,7 +65,7 @@ const VentaPage = () => {
           console.log(listValue.servicio);
           console.log(listValue.tipo);
           console.log(listValue.subtotal);
-          /*clienteAxios.put("https://lavanderia-backend.herokuapp.com/ingresos", {
+          clienteAxios.put("https://lavanderia-backend.herokuapp.com/ingresos", {
             servicio: listValue.servicio,
             tipo: listValue.tipo,
             monto: listValue.subtotal,
@@ -75,7 +75,7 @@ const VentaPage = () => {
             })
             .catch((error) => {
               console.log(error);
-            });*/
+            });
         }
       }
       if(values.total !== values.pago){
