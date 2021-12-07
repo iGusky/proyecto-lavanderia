@@ -37,7 +37,7 @@ const GraficaPorServicio = (props: propsInterface) => {
       },
       title: {
         display: true,
-        text: 'Ingesos Mensuales por servicio'
+        text: 'Ingresos Mensuales por servicio'
       }
     }
   };
@@ -52,7 +52,7 @@ const GraficaPorServicio = (props: propsInterface) => {
             datasets: data?.datasets,
             labels: data?.labels
           }} />
-        ) : (<p>Cagando...</p>)
+        ) : (<p>Cargando...</p>)
       }
     </div>
   )
