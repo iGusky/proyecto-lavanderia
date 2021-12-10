@@ -73,7 +73,7 @@ function GastosPage() {
 
   return (
     <div className="container">
-      <h1>Resumen de Ingresos</h1>
+      <h1>Resumen de Egresos</h1>
       <div className='container'>
       <form>
         <label htmlFor="servicio">Seleccione un servicio </label>
